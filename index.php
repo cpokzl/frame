@@ -3,7 +3,9 @@ define('BASEDIR', __DIR__);
 include BASEDIR.'/Common/Loader.php';
 spl_autoload_register('\\Common\\Loader::autoload');
 
-$db=Common\Database::getInstance();
-$db=Common\Factory::createDatabase();
+$db=new Common\Database\PDO();
+$db->connect('127.0.0.1','root','87609877','vcoin');
 
-\Common\Register::get('db1');
+$data=$db->query("select * from vc_user");
+var_dump($data);
+$db->close();
