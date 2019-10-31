@@ -1,11 +1,34 @@
 <?php
 define('BASEDIR', __DIR__);
-include BASEDIR.'/Common/Loader.php';
+include BASEDIR . '/Common/Loader.php';
 spl_autoload_register('\\Common\\Loader::autoload');
 
-$db=new Common\Database\PDO();
-$db->connect('127.0.0.1','root','87609877','vcoin');
+// echo '<met>'
+class Page
+{
+    protected $strategy;
 
-$data=$db->query("select * from vc_user");
-var_dump($data);
-$db->close();
+    function index()
+    {
+        echo "AD:";
+        $this->strategy->showAd();
+        echo "<br/>";
+        echo "Category:";
+        $this->strategy->showCategory();
+        echo "<br/>";
+    }
+
+    function setStrategy(\Common\UserStrategy $strategy)
+    {
+        $this->strategy = $strategy;
+    }
+}
+
+$page = new Page();
+if (isset($_GET['female'])) {
+    $strategy = new \Common\FemaleUserStrategy();
+} else {
+    $strategy = new \Common\MaleUserStrategy();
+}
+$page->setStrategy($strategy);
+$page->index();
